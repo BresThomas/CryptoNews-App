@@ -63,16 +63,16 @@ class _BreakingNews extends StatelessWidget {
               Text('More', style: Theme.of(context).textTheme.bodyLarge),
             ],
           ),
-          const SizedBox(height: 20),
           SizedBox(
             height: 250,
             child: ListView.builder(
-              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
               itemCount: articles.length,
               itemBuilder: (context, index) {
                 return Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  margin: const EdgeInsets.only(right: 10),
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(bottom: 10),
                   child: InkWell(
                     onTap: () {
                       Navigator.pushNamed(
@@ -81,30 +81,38 @@ class _BreakingNews extends StatelessWidget {
                         arguments: articles[index],
                       );
                     },
-                    child: Column(
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ImageContainer(
                           width: MediaQuery.of(context).size.width * 0.5,
                           imageUrl: articles[index].imageUrl,
                         ),
-                        const SizedBox(height: 10),
-                        Text(
-                          articles[index].title,
-                          maxLines: 2,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  fontWeight: FontWeight.bold, height: 1.5),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                articles[index].title,
+                                maxLines: 2,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        height: 1.5),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                  '${DateTime.now().difference(articles[index].createdAt).inHours} hours ago',
+                                  style: Theme.of(context).textTheme.bodySmall),
+                              const SizedBox(height: 5),
+                              Text('by ${articles[index].author}',
+                                  style: Theme.of(context).textTheme.bodySmall),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 5),
-                        Text(
-                            '${DateTime.now().difference(articles[index].createdAt).inHours} hours ago',
-                            style: Theme.of(context).textTheme.bodySmall),
-                        const SizedBox(height: 5),
-                        Text('by ${articles[index].author}',
-                            style: Theme.of(context).textTheme.bodySmall),
                       ],
                     ),
                   ),
