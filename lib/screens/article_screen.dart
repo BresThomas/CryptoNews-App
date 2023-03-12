@@ -54,57 +54,60 @@ class _NewsBody extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Row(
-            children: [
-              CustomTag(
-                backgroundColor: Colors.black,
-                children: [
-                  CircleAvatar(
-                    radius: 10,
-                    backgroundImage: NetworkImage(
-                      article.authorImageUrl,
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                CustomTag(
+                  backgroundColor: Colors.black,
+                  children: [
+                    CircleAvatar(
+                      radius: 10,
+                      backgroundImage: NetworkImage(
+                        article.authorImageUrl,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    article.author,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
-                ],
-              ),
-              const SizedBox(width: 10),
-              CustomTag(
-                backgroundColor: Colors.grey.shade200,
-                children: [
-                  const Icon(
-                    Icons.timer,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    '${DateTime.now().difference(article.createdAt).inHours}h',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-              const SizedBox(width: 10),
-              CustomTag(
-                backgroundColor: Colors.grey.shade200,
-                children: [
-                  const Icon(
-                    Icons.remove_red_eye,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    '${article.views}',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ],
+                    const SizedBox(width: 10),
+                    Text(
+                      article.author,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Colors.white,
+                          ),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 10),
+                CustomTag(
+                  backgroundColor: Colors.grey.shade200,
+                  children: [
+                    const Icon(
+                      Icons.timer,
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      '${DateTime.now().difference(article.createdAt).inHours}h',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 10),
+                CustomTag(
+                  backgroundColor: Colors.grey.shade200,
+                  children: [
+                    const Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      '${article.views}',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 20),
           Text(

@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        HomeScreen.routeName: (context) => const HomeScreen(),
+        HomeScreen.routeName: (context) => HomeScreen(),
         DiscoverScreen.routeName: (context) => const DiscoverScreen(),
         ArticleScreen.routeName: (context) => const ArticleScreen(),
       },
