@@ -3,10 +3,15 @@ import 'package:flutter_news_app_ui/models/article_model.dart';
 import 'package:flutter_news_app_ui/screens/screens.dart';
 import 'package:flutter_news_app_ui/widgets/custom_tag.dart';
 
+import '../article_service.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../widgets/image_container.dart';
 
 import 'dart:async';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -18,41 +23,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Article>> _cryptoNews;
+  late Future<List<Article>> _fetchCryptoNews;
 
   @override
   void initState() {
     super.initState();
-    _cryptoNews = fetchCryptoNews();
-  }
-
-  Future<List<Article>> fetchCryptoNews() async {
-    final response = await http.get(Uri.parse(
-        "https://cryptopanic.com/api/v1/posts/?auth_token=177ab96ffe05ddf9d0ed21fe90630ed6fbe2ebaf&currencies=BTC,ETH,SOL,ADA,BNB,USDT,XRP,DOT,DOGE,LUNA,UNI,AVAX,THETA,MATIC,FIL,AAVE,ATOM,CAKE,TRX,XTZ,VET,FTT,ALGO,COMP,KSM,KLAY,CEL,GRT,REN,SRM,YFI,BCH,HBAR,ZEC,ONT,IOST,BTT,NEO,CHZ,BNT,RSR,CRO,QTUM,EGLD,SC,OKB,DASH,XMR,KSM"));
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      print(data);
-      final results = data['results'] as List<dynamic>;
-      return results
-          .map((result) => Article(
-                id: result['id'].toString(),
-                title: result['title'],
-                subtitle: result['domain'],
-                body: result['title'],
-                author: result['source']['title'],
-                authorImageUrl:
-                    'https://images.unsplash.com/photo-1658786403875-ef4086b78196?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80',
-                category: result['currencies'][0]['title'],
-                imageUrl:
-                    'https://images.unsplash.com/photo-1658786403875-ef4086b78196?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80',
-                views: 10,
-                createdAt: DateTime.parse(result['published_at']),
-              ))
-          .toList();
-    } else {
-      throw Exception('Failed to load crypto news');
-    }
+    _fetchCryptoNews = ArticleService.fetchCryptoNews();
   }
 
   @override
@@ -72,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: const BottomNavBar(index: 0),
       extendBodyBehindAppBar: true,
       body: FutureBuilder<List<Article>>(
-        future: _cryptoNews,
+        future: _fetchCryptoNews,
         builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
           if (snapshot.hasData) {
             return ListView(
@@ -149,7 +125,7 @@ class _BreakingNews extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.5,
                           imageUrl: articles[index].imageUrl,
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
