@@ -3,7 +3,6 @@ import 'package:flutter_news_app_ui/models/article_model.dart';
 import 'package:flutter_news_app_ui/screens/screens.dart';
 import 'package:flutter_news_app_ui/widgets/custom_tag.dart';
 
-import '../article_service.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../widgets/image_container.dart';
 
@@ -14,6 +13,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import '../widgets/utilities.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/';
@@ -28,7 +29,38 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchCryptoNews = ArticleService.fetchCryptoNews();
+    _fetchCryptoNews = fetchCryptoNews();
+  }
+
+  Future<List<Article>> fetchCryptoNews() async {
+    final response = await http.get(Uri.parse(
+        "https://cryptopanic.com/api/v1/posts/?auth_token=177ab96ffe05ddf9d0ed21fe90630ed6fbe2ebaf&currencies=BTC,ETH,SOL,ADA,BNB,USDT,XRP,DOT,DOGE,LUNA,UNI,AVAX,THETA,MATIC,FIL,AAVE,ATOM,CAKE,TRX,XTZ,VET,FTT,ALGO,COMP,KSM,KLAY,CEL,GRT,REN,SRM,YFI,BCH,HBAR,ZEC,ONT,IOST,BTT,NEO,CHZ,BNT,RSR,CRO,QTUM,EGLD,SC,OKB,DASH,XMR,KSM"));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final results = data['results'] as List<dynamic>;
+      return results
+          .map(
+            (result) => Article(
+              id: result['id'].toString(),
+              title: result['title'],
+              subtitle: result['domain'],
+              body: result['title'],
+              author: result['source']['title'],
+              authorImageUrl:
+                  "https://source.unsplash.com/300x300/?${"cryptocurrency " + result['title']}&client_id=your_access_key",
+              category: result['currencies'][0]['title'],
+              imageUrl:
+                  "https://source.unsplash.com/600x400/?${"cryptocurrency " + result['title']}&client_id=your_access_key",
+              views: 10,
+              createdAt: DateTime.parse(result['published_at']),
+              url: result['url'],
+            ),
+          )
+          .toList();
+    } else {
+      throw Exception('Failed to load crypto news');
+    }
   }
 
   @override
@@ -200,7 +232,9 @@ class _NewsOfTheDay extends StatelessWidget {
                 fontWeight: FontWeight.bold, height: 1.25, color: Colors.white),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              openUrl(context, article.url);
+            },
             style: TextButton.styleFrom(padding: EdgeInsets.zero),
             child: Row(
               children: [

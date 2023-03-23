@@ -9,6 +9,7 @@ class Article {
   final String imageUrl;
   final int views;
   final DateTime createdAt;
+  final String url;
 
   const Article({
     required this.id,
@@ -21,6 +22,7 @@ class Article {
     required this.imageUrl,
     required this.views,
     required this.createdAt,
+    required this.url,
   });
 
   @override
@@ -34,5 +36,6 @@ class Article {
         category,
         imageUrl,
         createdAt,
+        url,
       ];
 }

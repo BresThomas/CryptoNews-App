@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/article_model.dart';
 import '../widgets/custom_tag.dart';
 import '../widgets/image_container.dart';
+import '../widgets/utilities.dart';
 
 class ArticleScreen extends StatelessWidget {
   const ArticleScreen({Key? key}) : super(key: key);
@@ -44,6 +45,7 @@ class _NewsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 500,
       padding: const EdgeInsets.all(20.0),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -61,13 +63,6 @@ class _NewsBody extends StatelessWidget {
                 CustomTag(
                   backgroundColor: Colors.black,
                   children: [
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundImage: NetworkImage(
-                        article.authorImageUrl,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
                     Text(
                       article.author,
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -123,21 +118,29 @@ class _NewsBody extends StatelessWidget {
             style:
                 Theme.of(context).textTheme.bodyMedium!.copyWith(height: 1.5),
           ),
-          const SizedBox(height: 20),
-          GridView.builder(
-              shrinkWrap: true,
-              itemCount: 2,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.25,
-              ),
-              itemBuilder: (context, index) {
-                return ImageContainer(
-                  width: MediaQuery.of(context).size.width * 0.42,
-                  imageUrl: article.imageUrl,
-                  margin: const EdgeInsets.only(right: 5.0, bottom: 5.0),
-                );
-              })
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () {
+              print("hello");
+              openUrl(context, article.url);
+            },
+            style: TextButton.styleFrom(padding: EdgeInsets.zero),
+            child: Row(
+              children: [
+                Text(
+                  'Learn More',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Colors.black,
+                      ),
+                ),
+                const SizedBox(width: 10),
+                const Icon(
+                  Icons.arrow_right_alt,
+                  color: Colors.black,
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

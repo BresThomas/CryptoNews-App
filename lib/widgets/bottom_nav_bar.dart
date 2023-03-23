@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_news_app_ui/screens/discover_screen.dart';
 import 'package:flutter_news_app_ui/screens/home_screen.dart';
+
+import '../screens/profil_screen.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({
@@ -32,20 +33,11 @@ class BottomNavBar extends StatelessWidget {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, DiscoverScreen.routeName);
-            },
-            icon: const Icon(Icons.search),
-          ),
-          label: 'Search',
-        ),
-        BottomNavigationBarItem(
           icon: Container(
             margin: const EdgeInsets.only(right: 50),
             child: IconButton(
               onPressed: () {
-                print('No profile screen yet');
+                Navigator.pushNamed(context, ProfilePage.routeName);
               },
               icon: const Icon(Icons.person),
             ),

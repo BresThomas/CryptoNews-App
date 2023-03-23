@@ -9,10 +9,10 @@ class ArticleService {
         "https://cryptopanic.com/api/v1/posts/?auth_token=" +
             dotenv.env['API_KEY_CRYPTO_PANIC']! +
             "&currencies=BTC,ETH,SOL,ADA,BNB,USDT,XRP,DOT,DOGE,LUNA,UNI,AVAX,THETA,MATIC,FIL,AAVE,ATOM,CAKE,TRX,XTZ,VET,FTT,ALGO,COMP,KSM,KLAY,CEL,GRT,REN,SRM,YFI,BCH,HBAR,ZEC,ONT,IOST,BTT,NEO,CHZ,BNT,RSR,CRO,QTUM,EGLD,SC,OKB,DASH,XMR,KSM"));
-
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final results = data['results'] as List<dynamic>;
+      print(results);
       return results
           .map((result) => Article(
                 id: result['id'].toString(),
@@ -29,6 +29,7 @@ class ArticleService {
                         dotenv.env['API_KEY_UNSPLASH']!,
                 views: 10,
                 createdAt: DateTime.parse(result['published_at']),
+                url: result['url'],
               ))
           .toList();
     } else {
