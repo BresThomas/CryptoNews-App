@@ -1,5 +1,5 @@
-name: flutter_news_app_ui
-description: A new Flutter project.
+name: flutter_cryptoNews_app
+description: This is a Flutter project for a news app that displays the latest news related to crypto (Web3).
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
