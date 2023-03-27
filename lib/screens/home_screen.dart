@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_news_app_ui/models/article_model.dart';
-import 'package:flutter_news_app_ui/screens/screens.dart';
-import 'package:flutter_news_app_ui/widgets/custom_tag.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-
+import '../models/article_model.dart';
+import '../widgets/custom_tag.dart';
 import '../widgets/image_container.dart';
 
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import '../widgets/utilities.dart';
+import 'article_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/';
@@ -39,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final results = data['results'] as List<dynamic>;
-      print(results);
       return results
           .map(
             (result) => Article(
