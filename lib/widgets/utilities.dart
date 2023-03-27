@@ -1,14 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
-void openUrl(BuildContext context, String url) async {
-  if (await canLaunchUrl(Uri.parse(url))) {
-    await launchUrl(Uri.parse(url));
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Could not launch $url'),
-      ),
-    );
-  }
+void launchURL(url) async {
+  if (!await launchUrlString(url)) throw 'Could not launch $url';
 }

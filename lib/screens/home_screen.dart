@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_news_app_ui/models/article_model.dart';
 import 'package:flutter_news_app_ui/screens/screens.dart';
 import 'package:flutter_news_app_ui/widgets/custom_tag.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
-import '../widgets/bottom_nav_bar.dart';
 import '../widgets/image_container.dart';
 
 import 'dart:async';
@@ -39,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final results = data['results'] as List<dynamic>;
+      print(results);
       return results
           .map(
             (result) => Article(
@@ -77,7 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavBar(index: 0),
       extendBodyBehindAppBar: true,
       body: FutureBuilder<List<Article>>(
         future: _fetchCryptoNews,
@@ -116,7 +116,8 @@ class _BreakingNews extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.only(
+          top: 20.0, left: 20.0, right: 20.0, bottom: 0.0),
       child: Column(
         children: [
           Row(
@@ -129,13 +130,12 @@ class _BreakingNews extends StatelessWidget {
                     .headlineSmall!
                     .copyWith(fontWeight: FontWeight.bold),
               ),
-              Text('More', style: Theme.of(context).textTheme.bodyLarge),
             ],
           ),
           SizedBox(
-            height: 250,
+            height: 500,
             child: ListView.builder(
-              shrinkWrap: true,
+              shrinkWrap: false,
               scrollDirection: Axis.vertical,
               itemCount: articles.length,
               itemBuilder: (context, index) {
@@ -233,7 +233,7 @@ class _NewsOfTheDay extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              openUrl(context, article.url);
+              launchURL(article.url);
             },
             style: TextButton.styleFrom(padding: EdgeInsets.zero),
             child: Row(

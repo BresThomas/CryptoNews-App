@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         HomeScreen.routeName: (context) => HomeScreen(),
-        ProfilePage.routeName: (context) => const ProfilePage(),
         ArticleScreen.routeName: (context) => const ArticleScreen(),
       },
     );

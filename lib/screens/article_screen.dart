@@ -121,8 +121,7 @@ class _NewsBody extends StatelessWidget {
           const SizedBox(height: 10),
           TextButton(
             onPressed: () {
-              print("hello");
-              openUrl(context, article.url);
+              launchURL(article.url);
             },
             style: TextButton.styleFrom(padding: EdgeInsets.zero),
             child: Row(
