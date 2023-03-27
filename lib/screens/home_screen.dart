@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_news_app_ui/models/article_model.dart';
 import 'package:flutter_news_app_ui/screens/screens.dart';
 import 'package:flutter_news_app_ui/widgets/custom_tag.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
-import '../widgets/bottom_nav_bar.dart';
 import '../widgets/image_container.dart';
 
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import '../widgets/utilities.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/';
@@ -18,12 +24,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Article>> _cryptoNews;
+  late Future<List<Article>> _fetchCryptoNews;
 
   @override
   void initState() {
     super.initState();
-    _cryptoNews = fetchCryptoNews();
+    _fetchCryptoNews = fetchCryptoNews();
   }
 
   Future<List<Article>> fetchCryptoNews() async {
@@ -32,23 +38,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      print(data);
       final results = data['results'] as List<dynamic>;
+      print(results);
       return results
-          .map((result) => Article(
-                id: result['id'].toString(),
-                title: result['title'],
-                subtitle: result['domain'],
-                body: result['title'],
-                author: result['source']['title'],
-                authorImageUrl:
-                    'https://images.unsplash.com/photo-1658786403875-ef4086b78196?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80',
-                category: result['currencies'][0]['title'],
-                imageUrl:
-                    'https://images.unsplash.com/photo-1658786403875-ef4086b78196?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80',
-                views: 10,
-                createdAt: DateTime.parse(result['published_at']),
-              ))
+          .map(
+            (result) => Article(
+              id: result['id'].toString(),
+              title: result['title'],
+              subtitle: result['domain'],
+              body: result['title'],
+              author: result['source']['title'],
+              authorImageUrl:
+                  "https://source.unsplash.com/300x300/?${"cryptocurrency " + result['title']}&client_id=your_access_key",
+              category: result['currencies'][0]['title'],
+              imageUrl:
+                  "https://source.unsplash.com/600x400/?${"cryptocurrency " + result['title']}&client_id=your_access_key",
+              views: 10,
+              createdAt: DateTime.parse(result['published_at']),
+              url: result['url'],
+            ),
+          )
           .toList();
     } else {
       throw Exception('Failed to load crypto news');
@@ -69,10 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavBar(index: 0),
       extendBodyBehindAppBar: true,
       body: FutureBuilder<List<Article>>(
-        future: _cryptoNews,
+        future: _fetchCryptoNews,
         builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
           if (snapshot.hasData) {
             return ListView(
@@ -108,7 +116,8 @@ class _BreakingNews extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.only(
+          top: 20.0, left: 20.0, right: 20.0, bottom: 0.0),
       child: Column(
         children: [
           Row(
@@ -121,13 +130,12 @@ class _BreakingNews extends StatelessWidget {
                     .headlineSmall!
                     .copyWith(fontWeight: FontWeight.bold),
               ),
-              Text('More', style: Theme.of(context).textTheme.bodyLarge),
             ],
           ),
           SizedBox(
-            height: 250,
+            height: 500,
             child: ListView.builder(
-              shrinkWrap: true,
+              shrinkWrap: false,
               scrollDirection: Axis.vertical,
               itemCount: articles.length,
               itemBuilder: (context, index) {
@@ -149,7 +157,7 @@ class _BreakingNews extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.5,
                           imageUrl: articles[index].imageUrl,
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,7 +232,9 @@ class _NewsOfTheDay extends StatelessWidget {
                 fontWeight: FontWeight.bold, height: 1.25, color: Colors.white),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              launchURL(article.url);
+            },
             style: TextButton.styleFrom(padding: EdgeInsets.zero),
             child: Row(
               children: [

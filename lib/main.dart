@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'screens/screens.dart';
 
 void main() {
@@ -20,7 +19,6 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         HomeScreen.routeName: (context) => HomeScreen(),
-        DiscoverScreen.routeName: (context) => const DiscoverScreen(),
         ArticleScreen.routeName: (context) => const ArticleScreen(),
       },
     );
