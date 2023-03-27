@@ -1,6 +1,8 @@
 # flutter_news_app_ui
 
-A new Flutter project.
+A CryptoNews App.
+
+![mockup](https://user-images.githubusercontent.com/59121834/227973259-1df325f5-208b-4b31-86db-9b755ba18fb4.jpeg)
 
 ## Getting Started
 
