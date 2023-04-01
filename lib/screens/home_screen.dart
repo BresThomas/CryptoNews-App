@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<List<Article>> fetchCryptoNews() async {
     final response = await http.get(Uri.parse(
-        "https://cryptopanic.com/api/v1/posts/?auth_token=177ab96ffe05ddf9d0ed21fe90630ed6fbe2ebaf&currencies=BTC,ETH,SOL,ADA,BNB,USDT,XRP,DOT,DOGE,LUNA,UNI,AVAX,THETA,MATIC,FIL,AAVE,ATOM,CAKE,TRX,XTZ,VET,FTT,ALGO,COMP,KSM,KLAY,CEL,GRT,REN,SRM,YFI,BCH,HBAR,ZEC,ONT,IOST,BTT,NEO,CHZ,BNT,RSR,CRO,QTUM,EGLD,SC,OKB,DASH,XMR,KSM"));
+        "https://cryptopanic.com/api/v1/posts/?auth_token=your_access_key&currencies=BTC,ETH,SOL,ADA,BNB,USDT,XRP,DOT,DOGE,LUNA,UNI,AVAX,THETA,MATIC,FIL,AAVE,ATOM,CAKE,TRX,XTZ,VET,FTT,ALGO,COMP,KSM,KLAY,CEL,GRT,REN,SRM,YFI,BCH,HBAR,ZEC,ONT,IOST,BTT,NEO,CHZ,BNT,RSR,CRO,QTUM,EGLD,SC,OKB,DASH,XMR,KSM"));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
